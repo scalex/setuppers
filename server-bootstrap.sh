@@ -84,7 +84,7 @@ echo "  Keep in mind: this script assumes that you WILL install nginx"
 echo "  to default location (/opt/nginx). Do not change it please."
 # Let Passenger installer to download nginx for us...
 rvmsudo passenger-install-nginx-module
-sudo wget -O /etc/init.d/nginx https://raw.github.com/nilcolor/setuppers/master/nginx-init-script
+sudo wget -O /etc/init.d/nginx https://raw.github.com/Dashrocket/setuppers/master/nginx-init-script
 sudo chmod +x /etc/init.d/nginx
 sudo /usr/sbin/update-rc.d -f nginx defaults
 echo "done"
@@ -108,7 +108,7 @@ cd -
 
 echo "  get sample nginx config..."
 NGINX_CONF=/opt/nginx/conf/nginx.conf
-sudo wget -O $NGINX_CONF https://raw.github.com/nilcolor/setuppers/master/nginx-sample-config
+sudo wget -O $NGINX_CONF https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-config
 # passenger_gem=`cd $GEM_HOME/gems && ls -al | grep 'passenger' | awk '{ print $9}'`
 passenger_gem=`passenger-config --root`
 passenger_ruby=`which ruby`
