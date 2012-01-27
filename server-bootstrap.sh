@@ -112,7 +112,7 @@ sudo wget -O $NGINX_CONF https://raw.github.com/Dashrocket/setuppers/master/ngin
 # passenger_gem=`cd $GEM_HOME/gems && ls -al | grep 'passenger' | awk '{ print $9}'`
 passenger_gem=`passenger-config --root`
 passenger_ruby=`which ruby`
-sudo sed -i -e 's|<passenger_root>|passenger_root '$GEM_HOME'/gems/'$passenger_gem';|g' $NGINX_CONF
+sudo sed -i -e 's|<passenger_root>|passenger_root '$passenger_gem';|g' $NGINX_CONF
 sudo sed -i -e 's|<passenger_ruby>|passenger_ruby '$passenger_ruby';|g' $NGINX_CONF
 
 sudo service nginx stop && sleep 5
