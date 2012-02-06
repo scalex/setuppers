@@ -67,60 +67,14 @@ echo "done"
 ##
 ## Install rails gem
 ##
-echo "Installing rails gem..."
-gem install rails
-echo "done"
+#echo "Installing rails gem..."
+#gem install rails
+#echo "done"
 ##
-## Install passenger and grab gem
+## Install Unicorn gem
 ##
-echo "Installing Phusion Passenger gem..."
-rvm 1.9.2 --passenger
-gem install passenger
-echo "done"
-##
-## Install nginx with Phusion Passenger support
-##
-echo "Installing Nginx + Phusion Passenger..."
-echo "  Keep in mind: this script assumes that you WILL install nginx"
-echo "  to default location (/opt/nginx). Do not change it please."
-# Let Passenger installer to download nginx for us...
-rvmsudo passenger-install-nginx-module
-sudo wget -O /etc/init.d/nginx https://raw.github.com/Dashrocket/setuppers/master/nginx-init-script
-sudo chmod +x /etc/init.d/nginx
-sudo /usr/sbin/update-rc.d -f nginx defaults
-echo "done"
-##
-## Create Rack testapp & start Nginx
-##
-echo "Create testapp and setup sample Rack application..."
-cd /tmp
-rails new testapp
-cd -
-# mkdir -p /tmp/testapp/public
-# mkdir -p /tmp/testapp/tmp
-# touch /tmp/testapp/config.ru
-# cat <<EOF > /tmp/testapp/config.ru
-# app = proc do |env|
-#     [200, { "Content-Type" => "text/html" }, ["hello <b>world</b>"]]
-# end
-# run app
-#
-# EOF
-
-echo "  get sample nginx config..."
-NGINX_CONF=/opt/nginx/conf/nginx.conf
-sudo wget -O $NGINX_CONF https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-config
-# passenger_gem=`cd $GEM_HOME/gems && ls -al | grep 'passenger' | awk '{ print $9}'`
-passenger_gem=`passenger-config --root`
-passenger_ruby=`which ruby`
-sudo sed -i -e 's|<passenger_root>|passenger_root '$passenger_gem';|g' $NGINX_CONF
-sudo sed -i -e 's|<passenger_ruby>|passenger_ruby '$passenger_ruby';|g' $NGINX_CONF
-
-sudo service nginx stop && sleep 5
-sudo service nginx start
-echo "  now you should be able to see mega-site at http://localhost"
+echo "Installing Unicorn gem..."
+rvm use default # just to make sure
+gem install unicorn
 echo "done"
 
-echo "Adding a 2 sec delay to the interface up, to make the dhclient happy"
-sudo echo "pre-up sleep 2" >> /etc/network/interfaces
-exit
