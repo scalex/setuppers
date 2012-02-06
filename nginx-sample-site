@@ -1,0 +1,44 @@
+upstream test-unicorn-app {
+  server unix:/tmp/test-unicorn-app.socket fail_timeout=0;
+}
+
+server {
+       listen   80; ## listen for ipv4; this line is default and implied
+       #listen   [::]:80 default ipv6only=on; ## listen for ipv6
+       server_name _;
+
+       root /var/www/test-unicorn-app/public;
+       access_log /var/log/nginx/test-unicorn-app_access.log;
+       error_log /var/log/nginx/test-unicorn-app_error.log;
+       rewrite_log on;
+
+       # Make site accessible from http://localhost/
+       server_name localhost;
+
+       location / {
+         proxy_pass http://test-unicorn-app;
+         proxy_redirect off;
+         proxy_set_header Host $http_host;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+         client_max_body_size 10m;
+         client_body_buffer_size 128k;
+
+         proxy_connect_timeout      90;
+         proxy_send_timeout         90;
+         proxy_read_timeout         90;
+
+         proxy_buffer_size          4k;
+         proxy_buffers              4 32k;
+         proxy_busy_buffers_size    64k;
+         proxy_temp_file_write_size 64k;
+
+         index  index.html index.htm;
+       }
+
+       error_page 500 502 503 504  /50x.html;
+       location = /500x.html {
+         root /var/www/test-unicorn-app/public;
+       }
+}
