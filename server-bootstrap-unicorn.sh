@@ -32,7 +32,7 @@ sudo apt-get clean
 ##
 ## Install nginx
 ##
-sudo apt-get install nginx
+sudo apt-get -y install nginx
 ##
 ## Install RVM
 ##
