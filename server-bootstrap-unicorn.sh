@@ -74,7 +74,19 @@ echo "done"
 ## Install Unicorn gem
 ##
 echo "Installing Unicorn gem..."
-rvm use default # just to make sure
+#rvm use default # just to make sure
+rvm use 1.9.2@global
 gem install unicorn
 echo "done"
-
+##
+## Prepare stuff
+##
+sudo mkdir -p /var/www
+cd /var/www
+sudo rails new test-unicorn-app -T
+sudo wget -O /etc/nginx/sites-available/test-unicorn-app https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-site
+sudo ln -s /etc/nginx/sites-available/test-unicorn-app /etc/nginx/sites-enabled/test-unicorn-app
+##
+## Hope i'm done...
+##
+echo "Everything is done. Now please restart you server."
