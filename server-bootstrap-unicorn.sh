@@ -30,6 +30,10 @@ sudo apt-get -y install linux-headers-$(uname -r) build-essential \
   >> $LOGF
 sudo apt-get clean
 ##
+## Install nginx
+##
+sudo apt-get install nginx
+##
 ## Install RVM
 ##
 echo "Installing RVM..."
@@ -62,7 +66,7 @@ echo "done"
 ##
 echo "Installing Ruby 1.9.2 (this may take awhile)..."
 rvm install 1.9.2
-rvm --default ruby-1.9.2
+rvm --default 1.9.2
 echo "done"
 ##
 ## Install rails gem
@@ -81,11 +85,16 @@ echo "done"
 ##
 ## Prepare stuff
 ##
+echo "Install test nginx config"
+sudo wget -O /etc/nginx/sites-available/test-unicorn-app https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-site
+sudo ln -s /etc/nginx/sites-available/test-unicorn-app /etc/nginx/sites-enabled/test-unicorn-app
+##
+## Create test application
+##
+echo "Create test application"
 sudo mkdir -p /var/www
 cd /var/www
 sudo rails new test-unicorn-app -T
-sudo wget -O /etc/nginx/sites-available/test-unicorn-app https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-site
-sudo ln -s /etc/nginx/sites-available/test-unicorn-app /etc/nginx/sites-enabled/test-unicorn-app
 ##
 ## Hope i'm done...
 ##
