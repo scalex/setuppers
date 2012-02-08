@@ -83,18 +83,33 @@ rvm use 1.9.2@global
 gem install unicorn
 echo "done"
 ##
+## Add current user to www-data group
+##
+sudo usermod -aG www-data $USER
+##
 ## Prepare stuff
 ##
 echo "Install test nginx config"
 sudo wget -O /etc/nginx/sites-available/test-unicorn-app https://raw.github.com/Dashrocket/setuppers/master/nginx-sample-site
 sudo ln -s /etc/nginx/sites-available/test-unicorn-app /etc/nginx/sites-enabled/test-unicorn-app
 ##
+## Install Ruby on Rails 3.1.3
+##
+echo "Installing Ruby on Rails v3.1.3..."
+rvm use 1.9.2@global
+gem install rails --version=3.1.3
+sudo apt-get -y install nodejs
+echo "done"
+##
 ## Create test application
 ##
 echo "Create test application"
 sudo mkdir -p /var/www
+sudo chown $USER:www-data -R /var/www
 cd /var/www
-sudo rails new test-unicorn-app -T
+##sudo rails new test-unicorn-app -T
+#rvm --rvmrc --create 1.9.2@global
+#rvm rvmrc trust
 ##
 ## Hope i'm done...
 ##
